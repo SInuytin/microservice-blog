@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/blogdb
+    username: admin
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update #only development
+    show-sql: true #only development
+    properties:
+      hibernate:
+        format_sql: true
