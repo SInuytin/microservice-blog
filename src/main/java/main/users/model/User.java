@@ -1,4 +1,4 @@
-package main.user.model;
+package main.users.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +26,7 @@ public class User {
     @Email
     @NotBlank
     private String email;
-    
+
     @NotBlank
     private String passwordHash;
 }
