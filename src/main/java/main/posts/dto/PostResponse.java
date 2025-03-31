@@ -9,5 +9,5 @@ public class PostResponse {
     private Long id;
     private String title;
     private String content;
-    private Long authorId;
+    private Long authorId; 
 }

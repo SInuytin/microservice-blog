@@ -1,48 +1,51 @@
-package main.post.service;
+package main.posts.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import main.post.model.Post;
+import main.posts.dto.PostCreateRequest;
+import main.posts.dto.PostEditRequest;
+import main.posts.dto.PostResponse;
 
 @Service
 public class PostServiseImpl implements PostService{
 
     @Override
-    public Post create(Post post) {
+    public PostResponse create(PostCreateRequest post) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 
     @Override
-    public void delete(long id) {
+    public boolean delete(Long id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
     @Override
-    public List<Post> findAll() {
+    public List<PostResponse> getAllPosts() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        throw new UnsupportedOperationException("Unimplemented method 'getAllPosts'");
     }
 
     @Override
-    public Post findById(Long id) {
+    public List<PostResponse> searchByTitle(String title) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'searchByTitle'");
+    }
+
+    @Override
+    public Optional<PostResponse> editPost(Long id, PostEditRequest request) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'editPost'");
+    }
+
+    @Override
+    public Optional<PostResponse> findById(Long id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
-    }
-
-    @Override
-    public Post findByTitle(String title) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByTitle'");
-    }
-
-    @Override
-    public Post editContent(String content) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'editContent'");
     }
     
 }
