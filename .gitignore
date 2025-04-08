@@ -27,8 +27,6 @@ logs/
 
 #wrapper logs
 gradle-app.setting
-gradlew
-gradlew.bat
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
@@ -39,5 +37,6 @@ _*
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !gradle-wrapper.properties
-
+!gradlew
+!gradlew.bat
 bin
