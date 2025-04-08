@@ -2,7 +2,6 @@ package main.posts.service;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import main.posts.dto.PostCreateRequest;
 import main.posts.dto.PostEditRequest;
