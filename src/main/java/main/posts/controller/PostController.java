@@ -26,14 +26,11 @@ public class PostController {
     }
     @GetMapping("/search") 
     public ResponseEntity<List<PostResponse>> searchByTitle(@RequestParam String title) {
-        List<PostResponse> results = postService.searchByTitle(title);
-        return ResponseEntity.ok(results);
+        return ResponseEntity.ok(postService.searchByTitle(title));
     }
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
-        return postService.findById(id).
-            map(ResponseEntity::ok).
-            orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(postService.findById(id));
     }
     @PostMapping
     public ResponseEntity<PostResponse> createPost(@RequestBody @Valid PostCreateRequest request) {
@@ -44,8 +41,7 @@ public class PostController {
     public ResponseEntity<PostResponse> editPost(
         @PathVariable Long id, @RequestBody @Valid PostEditRequest request
     ) {
-        return postService.editPost(id, request)
-        .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(postService.editPost(id, request));
     }
 
     @DeleteMapping("/{id}")

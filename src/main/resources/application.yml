@@ -1,12 +1,13 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/blogdb
+    url: jdbc:postgresql://127.0.0.1:5432/blogdb
     username: admin
     password: password
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update #only development
-    show-sql: true #only development
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
         format_sql: true

@@ -14,8 +14,8 @@ public interface PostService {
     boolean delete(Long id);
 
     List<PostResponse> getAllPosts();
-    Optional<PostResponse> findById(Long id);
+    PostResponse findById(Long id);
     List<PostResponse> searchByTitle(String title);
 
-    Optional<PostResponse> editPost(Long id, PostEditRequest request);
+    PostResponse editPost(Long id, PostEditRequest request);
 }
