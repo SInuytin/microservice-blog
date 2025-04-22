@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import main.auth.dto.AuthRequest;
 import main.auth.dto.AuthResponse;
 import main.auth.dto.RegisterRequest;
-import main.security.CustomUserDetails;
 import main.security.jwt.JwtService;
 import main.users.dto.UserMapper;
 import main.users.service.UserService;
@@ -44,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse register(RegisterRequest request) {
         User user = userService.createUser(mapper.toCreateRequest(request));
-        String token = jwtService.generateToken(new CustomUserDetails(user));
+        String token = jwtService.generateToken(user);
         return new AuthResponse(token);
     }
     

@@ -2,19 +2,18 @@ package main.friends.service;
 
 import java.util.List;
 
-import main.friends.dto.FriendshipRequest;
-import main.friends.dto.FriendshipResponse;
 
 public interface FriendService {
-    public void sendFriendRequest(FriendshipRequest request);
-    public void unsendFriendRequest(Long friendshipId);
+    public void sendFriendRequest(Long friendId);
+    public void unsendFriendRequest(Long friendId);
     
-    public void acceptFriendRequest(FriendshipRequest request);
-    public void rejectFriendRequest(Long userId, Long friendId);
+    public void acceptFriendRequest(Long friendId);
+    public void rejectFriendRequest(Long friendId);
 
-    public void deleteFriend(Long userId, Long friendId);
 
-    public List<FriendshipResponse> getAllFriends(Long userId);
-    public List<FriendshipRequest> getIncomingRequests(Long userId);
-    public List<FriendshipRequest> getOutcomingRequests(Long userId);
+    public List<Long> getAllFriends();
+    public void deleteFriend(Long friendId);
+
+    public List<Long> getIncomingRequests();
+    public List<Long> getOutcomingRequests();
 }
