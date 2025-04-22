@@ -29,6 +29,7 @@ docker-compose up -d
 - Java 21
 - Spring Boot 3.x
 - Spring Data JPA
+- Spring Security
 - Lombok
 - PostgreSQL
 - Gradle
@@ -44,7 +45,7 @@ Example structure of the `posts` module:
 
 ```java
     posts
-    |_controller   // handles HTTP requests
+    |_controller   // handles HTTP requests, RESTful
     |_dto          // Data Transfer Objects
     |_exceptions   // module-specific exceptions
     |_model        // database and domain models
@@ -56,17 +57,31 @@ Example structure of the `posts` module:
 
 ## Implemented Features
 
+### Authorization
+- Registration
+- Loging
+- Authorites
+- JWT token system
+
 ### Users:
-- Registration, lookup, deletion
+- CRUD
+- Role managing,
+- Admin functions
 
 ### Posts:
 - Full CRUD operations
-- Search posts by title
+- Search posts by title or name
+
+### Friends:
+- Sub/Friend system
+- Safe transactions
+- All-need functions to build-up friend graph
 
 ---
 
 ## Future plans
 
-1. add some algorithms to recommend posts
-2. add friends system
-3. add comments
+1. add some algorithms to recommend posts and friends
+2. add comments and rating
+3. add simple frontend 
+4. add tests (they fall apart because of auth system)
