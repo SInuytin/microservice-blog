@@ -3,7 +3,7 @@
 This is an educational blog platform project written in Java using Spring Boot. The main goals are:
 
 - Clean monolithic architecture design with potential for microservice migration;
-- Proficient use of Spring Boot, JPA, Lombok, and Gradle;
+- By now it's a simple api for blog-related sire
 - Applying algorithms and data structures in real-world tasks.
 
 ---
@@ -40,6 +40,21 @@ docker-compose up -d
 ## Architecture
 
 The project is structured as a monolith with clear modular boundaries, making it easy to extract microservices in the future.
+
+### Project Structure:
+```java
+src/main/java
+└─ main
+   ├─ auth              # Security, JWT
+   ├─ users             # UserService, DTO, and UserDetailsService
+   ├─ posts             # Posts managing
+   ├─ friends           # FriendService
+   ├─ common            # CurrentUser, ExceptionHandler  etc.
+   └─ config            # all config for Spring (WebConfig, SecurityConfig)
+
+src/main/resources
+├─ application.yml     # config for DB and network
+```
 
 Example structure of the `posts` module:
 
