@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import main.friends.exceptions.FriendshipDontExistException;
 import main.friends.exceptions.WrongFriendshipStatusException;
-import main.friends.model.FriendshipStatus;
 import main.posts.exceptions.PostNotFoundException;
 import main.posts.exceptions.TitleDoesNotExistException;
 import main.users.exceptions.EmailAlreadyExistsException;
