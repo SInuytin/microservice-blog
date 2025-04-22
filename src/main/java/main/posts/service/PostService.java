@@ -9,7 +9,7 @@ import main.posts.dto.PostResponse;
 
 public interface PostService {
     
-    PostResponse create(PostCreateRequest post);
+    PostResponse create(Long authorId, PostCreateRequest post);
     boolean delete(Long id);
 
     List<PostResponse> getAllPosts();

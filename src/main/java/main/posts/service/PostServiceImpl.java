@@ -24,20 +24,14 @@ public class PostServiceImpl implements PostService{
 
     @Override
     @Transactional
-    public PostResponse create(PostCreateRequest createRequest) {
+    public PostResponse create(Long authorId, PostCreateRequest createRequest) {
         Post post = new Post();
-        post.setAuthorId(createRequest.getAuthorId());
-        post.setTitle(createRequest.getTitle());
-        post.setContent(createRequest.getContent());
-        repository.save(post);
-        PostResponse response = new PostResponse(
-            post.getId(),
-            post.getTitle(),
-            post.getContent(),
-            post.getAuthorId()
-        );
+        post.setAuthorId(authorId);
+        post.setTitle(createRequest.title());
+        post.setContent(createRequest.content());
+        Post saved = repository.save(post);
         
-        return response;
+        return mapper.toResponse(saved);
     }
 
     @Override
