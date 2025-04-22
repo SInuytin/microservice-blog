@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import main.friends.exceptions.FriendshipAlreadyExistsException;
 import main.friends.exceptions.FriendshipDontExistException;
 import main.friends.exceptions.WrongFriendshipStatusException;
 import main.posts.exceptions.PostNotFoundException;
@@ -15,6 +16,12 @@ import main.users.exceptions.UserNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // ==COMMON_EXCEPTIONS==
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalState(IllegalStateException e) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+    }
 
     // ==USER_EXCEPTIONS==
     @ExceptionHandler(EmailAlreadyExistsException.class)
@@ -51,6 +58,10 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(WrongFriendshipStatusException.class)
     public ResponseEntity<String> handleWrongFriendshipStatus(WrongFriendshipStatusException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+    @ExceptionHandler(FriendshipAlreadyExistsException.class)
+    public ResponseEntity<String> handleFriendshipAlreadyExists(FriendshipAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }

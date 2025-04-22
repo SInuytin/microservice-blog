@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import main.common.CurrentUser;
+import main.friends.exceptions.FriendshipAlreadyExistsException;
 import main.friends.exceptions.FriendshipDontExistException;
 import main.friends.exceptions.WrongFriendshipStatusException;
 import main.friends.model.Friendship;
@@ -16,20 +18,40 @@ import main.users.dto.UserResponse;
 import main.users.service.UserService;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-public class FriendServiceImpl implements FriendService{
+public class FriendServiceImpl implements FriendService {
 
     private final FriendRepository repository;
     private final CurrentUser currentUser;
     private final UserService userService;
+
+    private Friendship getFriendshipById(Long sender, Long replier, FriendshipStatus checkStatus) {
+        userService.getUserById(replier);
+        Friendship friendship = repository.findByUserIdAndFriendId(sender, replier)
+                .orElseThrow(() -> new FriendshipDontExistException(sender, replier));
+        if (friendship.getStatus() != checkStatus) {
+            throw new WrongFriendshipStatusException(friendship.getStatus());
+        }
+        return friendship;
+    }
+
+    private Friendship createFriendship(Long sender, Long replier, FriendshipStatus status) {
+        if (repository.findByUserIdAndFriendId(sender, replier).isPresent())
+            throw new FriendshipAlreadyExistsException(sender, replier);
+        Friendship friendship = new Friendship();
+        friendship.setUserId(sender);
+        friendship.setFriendId(replier);
+        friendship.setStatus(status);
+        return friendship;
+    }
+
     @Override
     public void sendFriendRequest(Long friendId) {
-        UserResponse friend = userService.getUserById(friendId);
-        Friendship friendship = new Friendship();
-        friendship.setUserId(currentUser.getId());
-        friendship.setFriendId(friend.id());
-        friendship.setStatus(FriendshipStatus.PENDING);
-        repository.save(friendship);
+        userService.getUserById(friendId);
+        repository.save(
+            createFriendship(currentUser.getId(), friendId, FriendshipStatus.PENDING)
+        );
     }
 
     @Override
@@ -48,40 +70,51 @@ public class FriendServiceImpl implements FriendService{
 
     @Override
     public void acceptFriendRequest(Long friendId) {
-        UserResponse friend = userService.getUserById(friendId);
-        Friendship friendship = repository.findByUserIdAndFriendId(friend.id(), currentUser.getId())
-          .orElseThrow(() -> new FriendshipDontExistException(currentUser.getId(), friendId));
-        friendship.setStatus(FriendshipStatus.ACCEPTED);
+        Friendship req = getFriendshipById(
+            friendId, currentUser.getId(), FriendshipStatus.PENDING
+        );
+        req.setStatus(FriendshipStatus.ACCEPTED);
+        repository.save(req);
+        Friendship back = createFriendship(currentUser.getId(), friendId, FriendshipStatus.ACCEPTED);
+        repository.save(back);
     }
 
     @Override
     public void rejectFriendRequest(Long friendId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'rejectFriendRequest'");
+        Friendship friendship = getFriendshipById(friendId, currentUser.getId(), FriendshipStatus.PENDING);
+        repository.delete(friendship);
     }
 
     @Override
     public void deleteFriend(Long friendId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteFriend'");
+        Friendship req = getFriendshipById(currentUser.getId(), friendId, FriendshipStatus.ACCEPTED);
+        Friendship back = getFriendshipById(friendId, currentUser.getId(),FriendshipStatus.ACCEPTED);
+        repository.delete(req);
+        repository.delete(back);
     }
 
     @Override
     public List<Long> getAllFriends() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllFriends'");
+        return repository
+            .findAllByUserIdAndStatus(
+                currentUser.getId(), FriendshipStatus.ACCEPTED
+            ).stream().map(Friendship::getFriendId).toList();
     }
 
     @Override
     public List<Long> getIncomingRequests() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getIncomingRequests'");
+        return repository
+            .findAllByFriendIdAndStatus(
+                currentUser.getId(), FriendshipStatus.PENDING
+            ).stream().map(Friendship::getFriendId).toList();
     }
 
     @Override
     public List<Long> getOutcomingRequests() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getOutcomingRequests'");
+        return repository
+            .findAllByUserIdAndStatus(
+                currentUser.getId(), FriendshipStatus.PENDING
+            ).stream().map(Friendship::getFriendId).toList();
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import main.users.dto.UserCreateRequest;
@@ -21,6 +22,7 @@ import main.users.model.User;
 import main.users.repository.UserRepository;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
         newUser.setPasswordHash(hash);
 
         User saved = repository.save(newUser);
-        
+
         return saved;
     }
 
@@ -97,20 +99,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse setAdmin(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAdmin'");
+        User user = getUser(id);
+
+        if (user.getRoles().contains(Role.ROLE_ADMIN)) {
+            throw new IllegalStateException("User with id:" + id.toString() + " is already admin");
+        }
+        user.getRoles().add(Role.ROLE_ADMIN);
+
+        return userMapper.toResponse(repository.save(user));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponse> getAllAdmins() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllAdmins'");
+        List<User> admins = repository.findAllByRoles(Role.ROLE_ADMIN);
+        return admins.stream()
+                     .map(userMapper::toResponse)
+                     .toList();
     }
 
     @Override
     public void deleteAdmin(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAdmin'");
+        User user = getUser(id);
+
+        if (!user.getRoles().remove(Role.ROLE_ADMIN)) {
+            throw new IllegalStateException("this user with id: " + id.toString() + " is not an admin");
+        }
+        repository.save(user);
     }
 
 }
