@@ -6,46 +6,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import main.friends.service.FriendsService;
+import main.friends.dto.FriendshipRequest;
+import main.friends.dto.FriendshipResponse;
+import main.friends.service.FriendService;
 
 @RestController
-@RequestMapping("users/{userId}/friends")
+@RequestMapping("api/friends")
 @RequiredArgsConstructor
 public class FriendContoller {
-    private final FriendsService friendsService;
+    private final FriendService friendService;
 
-    @PostMapping("/requests")
-    public ResponseEntity<Void> sendFriendRequest(
-        @PathVariable Long userId,
-        @RequestParam Long toUserId
-    ) {
-        friendsService.sendFriendRequest(userId, toUserId);
+    @PostMapping()
+    public ResponseEntity<Void> sendFriendRequest(@RequestBody FriendshipRequest request) {
+        friendService.sendFriendRequest(request);
         return ResponseEntity.ok().build();
-    }
+    }    
 
-    @PostMapping("/requests/{fromUserId}/accept")
+    @PostMapping("/requests/accept")
     public ResponseEntity<Void> acceptFriendRequest(
-        @PathVariable Long userId,
-        @PathVariable Long fromUserId
+        @RequestBody FriendshipRequest request
     ) {
-        friendsService.acceptFriendRequest(userId, fromUserId);
+        friendService.acceptFriendRequest(request);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/requests/{fromUserId}/reject")
     public ResponseEntity<Void> rejectFriendRequest(@PathVariable Long userId,
                                                     @PathVariable Long fromUserId) {
-        friendsService.rejectFriendRequest(userId, fromUserId);
+        friendService.rejectFriendRequest(userId, fromUserId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<FriendResponse>> getFriends(@PathVariable Long userId) {
-        return ResponseEntity.ok(friendsService.getAllFriends(userId));
+    public ResponseEntity<List<FriendshipResponse>> getFriends(@PathVariable Long userId) {
+        return ResponseEntity.ok(friendService.getAllFriends(userId));
     }
 }

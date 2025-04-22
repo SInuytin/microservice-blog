@@ -11,3 +11,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+jwt:
+  ## message in base64 code
+  secret: dGhpc0lzTXlTYWx0U2VjcmV0VmVyeVN1cGVyRHVwZXJTZWNyZXQ=
+  expiration: 86400000  # 1 day
