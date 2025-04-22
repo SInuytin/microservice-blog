@@ -4,7 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import main.security.CustomUserDetails;
+import main.users.model.User;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,10 +29,10 @@ public class JwtService {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
 
-        if (userDetails instanceof CustomUserDetails custom) {
-            extraClaims.put("userId", custom.getId());
-            extraClaims.put("email", custom.getEmail());
-            extraClaims.put("role", custom.getRole());
+        if (userDetails instanceof User user) {
+            extraClaims.put("userId", user.getId());
+            extraClaims.put("email", user.getEmail());
+            extraClaims.put("roles", user.getRoles());
         }
 
         return buildToken(extraClaims, userDetails.getUsername());

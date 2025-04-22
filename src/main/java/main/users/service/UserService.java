@@ -17,4 +17,9 @@ public interface UserService {
 
     UserResponse editUser(Long id, UserEditRequest request);
     void deleteUser(Long id);
+
+    //TODO вынести в admin service
+    UserResponse setAdmin(Long id);
+    List<UserResponse> getAllAdmins();
+    void deleteAdmin(Long id);
 }

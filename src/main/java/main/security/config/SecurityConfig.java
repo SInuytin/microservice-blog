@@ -16,8 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
-import main.security.CustomUserDetailsService;
 import main.security.filter.JwtAuthFilter;
+import main.users.service.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +26,7 @@ import main.security.filter.JwtAuthFilter;
 public class SecurityConfig {
     
     private final JwtAuthFilter jwtAuthFilter;
-    private final CustomUserDetailsService userDetailsService;
+    private final UserServiceImpl userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {

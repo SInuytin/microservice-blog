@@ -14,7 +14,6 @@ import main.posts.dto.PostResponse;
 import main.posts.exceptions.TitleDoesNotExistException;
 import main.posts.model.Post;
 import main.posts.repository.PostRepository;
-import main.users.service.UserService;
 import main.posts.exceptions.PostNotFoundException;
 
 @Service

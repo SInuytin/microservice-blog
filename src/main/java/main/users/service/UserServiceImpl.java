@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +25,7 @@ import main.users.repository.UserRepository;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
@@ -93,6 +96,30 @@ public class UserServiceImpl implements UserService {
             throw new NameAlreadyExistsException(name);
         }
         return userMapper.toResponse(user.get());
+    }
+
+    @Override
+    public UserResponse setAdmin(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAdmin'");
+    }
+
+    @Override
+    public List<UserResponse> getAllAdmins() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllAdmins'");
+    }
+
+    @Override
+    public void deleteAdmin(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteAdmin'");
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByName(username)
+            .orElseThrow(() -> new UsernameNotFoundException(username)); //Link up with UserNotFoundException maybe
     }
 
 }
